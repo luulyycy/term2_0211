@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>怎麼辦！我的行李 · 智能天氣回溯</title>
+    <title>怎麼辦！我的行李 · 空白輸入版</title>
     <style>
         * {
             margin: 0;
@@ -22,7 +22,7 @@
         }
 
         .glass-card {
-            max-width: 1200px;
+            max-width: 1550px;
             width: 100%;
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(16px);
@@ -77,12 +77,12 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            margin-bottom: 26px;
+            margin-bottom: 20px;
             align-items: flex-end;
         }
 
         .field {
-            flex: 1 1 200px;
+            flex: 1 1 140px;
         }
         .field label {
             display: block;
@@ -94,11 +94,11 @@
         }
         .field input, .field select {
             width: 100%;
-            padding: 15px 22px;
+            padding: 15px 18px;
             background: #f2f9ff;
             border: none;
             border-radius: 40px;
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #002b4a;
             border: 2px solid transparent;
             transition: 0.2s;
@@ -119,12 +119,41 @@
             color-scheme: light;
         }
 
+        .space-options {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0 15px 0;
+            padding: 10px 0;
+        }
+        .space-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0f7ff;
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .space-option.selected {
+            background: #1f527c;
+            color: white;
+            border-color: #94b6e0;
+        }
+        .space-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #1f527c;
+        }
+
         .btn-group {
             display: flex;
             flex-wrap: wrap;
             gap: 18px;
             align-items: center;
             justify-content: space-between;
+            margin-top: 15px;
         }
         .btn-analyze {
             background: #1c4d78;
@@ -201,13 +230,12 @@
             font-weight: 600;
             margin-left: auto;
         }
-        .weather-note {
-            font-size: 0.9rem;
-            background: #fef7e0;
-            padding: 4px 16px;
+        .season-badge {
+            background: #f0d995;
+            padding: 6px 20px;
             border-radius: 40px;
-            color: #8a6e2c;
-            margin-left: 10px;
+            font-weight: 600;
+            color: #5e4a1a;
         }
 
         .result-area {
@@ -216,7 +244,7 @@
             border-radius: 44px;
             padding: 24px 26px 30px;
             border: 1px solid rgba(255,255,255,0.8);
-            min-height: 380px;
+            min-height: 500px;
         }
 
         .empty-state {
@@ -295,60 +323,166 @@
             font-weight: 600;
         }
 
-        .grid-cat {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+        /* 行李箱建議區塊 */
+        .luggage-recommend {
+            background: linear-gradient(135deg, #f6f9ff, #eaf2ff);
+            border-radius: 40px;
+            padding: 18px 25px;
+            margin-bottom: 25px;
+            border: 2px solid #acc6e9;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
         }
-        .cat-card {
+        .luggage-size {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0a3f6b;
+        }
+        .luggage-detail {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .space-indicator {
             background: white;
-            border-radius: 32px;
-            padding: 18px 18px 16px;
-            box-shadow: 0 8px 20px #d2e2f5;
+            border-radius: 60px;
+            padding: 8px 22px;
+            font-weight: 600;
+            border: 1px solid #8fb0da;
         }
-        .cat-title {
+        .progress-bar-bg {
+            width: 200px;
+            height: 18px;
+            background: #d9e6f5;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #1f527c;
+            border-radius: 30px;
+            width: 0%;
+        }
+        .luggage-note {
+            font-size: 0.9rem;
+            color: #2d618c;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* 大類別標題 */
+        .main-category {
+            font-size: 1.6rem;
             font-weight: 700;
-            font-size: 1.3rem;
-            border-bottom: 3px solid #deecfd;
-            padding-bottom: 10px;
-            margin-bottom: 14px;
+            color: #0e3d60;
+            margin: 25px 0 15px 0;
+            padding-left: 10px;
+            border-left: 8px solid #1f527c;
+        }
+        .main-category:first-of-type {
+            margin-top: 5px;
+        }
+        
+        /* 一排過標籤格式 */
+        .category-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 25px;
+            justify-content: flex-start;
+        }
+        
+        .item-group {
+            background: white;
+            border-radius: 24px;
+            padding: 16px 18px;
+            box-shadow: 0 4px 12px rgba(0,30,60,0.05);
+            border: 1px solid #eef4ff;
+            flex: 1 1 280px;
+            min-width: 280px;
+        }
+        
+        .group-title {
+            font-weight: 700;
+            color: #1e4e78;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #deecfd;
+            padding-bottom: 6px;
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #1e4e78;
         }
-        .item-list {
-            list-style: none;
-        }
-        .item-list li {
+        
+        .items-horizontal {
             display: flex;
-            justify-content: space-between;
-            padding: 8px 4px;
-            border-bottom: 1px dashed #e0edfd;
-            color: #1f4a6e;
+            flex-wrap: wrap;
+            gap: 8px 10px;
         }
-        .item-count {
-            background: #deedff;
-            padding: 4px 14px;
+        
+        .item-badge {
+            background: #f5faff;
             border-radius: 40px;
-            font-weight: 600;
+            padding: 6px 14px;
             font-size: 0.9rem;
-            color: #123b5b;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid #d4e4fc;
+            color: #1d4970;
+            white-space: nowrap;
         }
-        .item-ml {
+        
+        .item-badge .count {
+            background: #1f527c;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 10px;
             font-size: 0.8rem;
-            color: #5d7da3;
-            margin-left: 6px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
+        .item-badge .check {
+            background: #5e8ab9;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
+        .item-badge .ml-note {
+            font-size: 0.7rem;
+            color: #6f8eb0;
+            margin-left: 4px;
             font-weight: 400;
         }
+        
+        .item-badge .optional {
+            background: #b8b8b8;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
         .footnote {
-            margin-top: 28px;
+            margin-top: 25px;
             background: #dfedfd;
             padding: 16px 30px;
             border-radius: 50px;
             color: #26537c;
             text-align: center;
+            font-size: 0.95rem;
+            clear: both;
         }
+        
         .error-msg {
             background: #ffe7e3;
             color: #b14040;
@@ -363,407 +497,539 @@
 <div class="glass-card">
     <h1>
         😱 怎麼辦！我的行李
-        <span class="badge-free">智能天氣回溯版</span>
+        <span class="badge-free">空白輸入版</span>
     </h1>
-    <div class="sub-headline">選擇日期自動查詢天氣，若無當年度數據則參考去年同月</div>
+    <div class="sub-headline">只要經過小小的計算，可以幫你輕鬆解決旅行帶東西的問題</div>
 
     <div class="input-panel">
         <div class="flex-row">
             <div class="field">
                 <label>📍 目的地</label>
-                <input type="text" id="destInput" placeholder="例：北京、北海道、曼谷..." value="">
+                <input type="text" id="destInput" placeholder="例：北京、北海道" value="">
             </div>
             <div class="field">
                 <label>📅 出發日期</label>
-                <input type="date" id="dateInput" value="">
+                <input type="date" id="dateInput" value="2026-07-15">
             </div>
             <div class="field">
-                <label>⚥ 你的性別</label>
+                <label>🌙 過夜數</label>
+                <input type="number" id="nightsInput" min="1" max="365" placeholder="例：7天" value="">
+            </div>
+            <div class="field">
+                <label>⚥ 性別</label>
                 <select id="genderSelect">
+                    <option value="" disabled selected>請選擇</option>
                     <option value="male">男性</option>
                     <option value="female">女性</option>
                 </select>
             </div>
+            <div class="field">
+                <label>🏊 泳衣？</label>
+                <select id="swimSelect">
+                    <option value="" disabled selected>請選擇</option>
+                    <option value="no">不需要</option>
+                    <option value="yes">需要</option>
+                </select>
+            </div>
         </div>
+        
+        <!-- 行李箱剩餘空間選擇 -->
+        <div style="margin: 15px 0 5px 0; font-weight: 600; color: #1e4468;">🧳 希望行李箱剩餘空間：</div>
+        <div class="space-options" id="spaceOptions">
+            <label class="space-option selected">
+                <input type="radio" name="space" value="5" checked> 5%
+            </label>
+            <label class="space-option">
+                <input type="radio" name="space" value="10"> 10%
+            </label>
+            <label class="space-option">
+                <input type="radio" name="space" value="20"> 20%
+            </label>
+        </div>
+
         <div class="btn-group">
-            <button class="btn-analyze" id="analyzeBtn"><span>🌤️</span> 分析天氣與行李</button>
+            <button class="btn-analyze" id="analyzeBtn"><span>🌤️</span> 分析行李與行李箱</button>
             <button class="btn-clear" id="clearBtn"><span>🧽</span> 清空所有</button>
         </div>
     </div>
 
     <div class="result-area" id="resultPanel">
         <div id="resultContent" class="empty-state">
-            <div class="big-icon">🌍✈️</div>
-            <p>選擇目的地、日期和性別，點擊「分析天氣與行李」</p>
+            <div class="big-icon">🧳✨</div>
+            <p>請填寫上方資訊，點擊「分析行李與行李箱」查看結果</p>
         </div>
     </div>
 </div>
 
 <script>
     (function() {
-        // ==================== 擴充天氣資料庫 ====================
-        // 2026年天氣預報/實況 (當年度)
-        const weather2026 = {
+        // ==================== 天氣資料庫 ====================
+        const weatherDB = {
             '北京': {
-                '3月': { 
-                    tempRange: '4~11°C', 
-                    condition: '多雲，偶有雨雪',
-                    clothing: '厚外套、羽絨服、毛衣',
-                    thick: true,
-                    source: '中國天氣網 2026.3 '
-                },
-                '4月': { tempRange: '10~20°C', condition: '多雲轉晴', clothing: '薄外套、長袖、針織衫', thick: false, source: '中國天氣網 2026.4 ' }
+                '3月': { tempRange: '4~15°C', condition: '多雲轉晴', season: '春天', thick: false },
+                '4月': { tempRange: '10~22°C', condition: '晴時多雲', season: '春天', thick: false },
+                '5月': { tempRange: '16~28°C', condition: '晴朗', season: '夏天', thick: false },
+                '6月': { tempRange: '20~32°C', condition: '炎熱', season: '夏天', thick: false },
+                '7月': { tempRange: '23~35°C', condition: '炎熱潮濕', season: '夏天', thick: false },
+                '8月': { tempRange: '22~34°C', condition: '炎熱', season: '夏天', thick: false },
+                '12月': { tempRange: '-5~3°C', condition: '寒冷乾燥', season: '冬天', thick: true },
+                '1月': { tempRange: '-8~2°C', condition: '嚴寒', season: '冬天', thick: true },
+                '2月': { tempRange: '-5~5°C', condition: '寒冷', season: '冬天', thick: true }
             },
             '北海道': {
-                '3月': { 
-                    tempRange: '1~5°C', 
-                    condition: '多雲時晴，偶有降雪',
-                    clothing: '羽絨服、防水靴、圍巾',
-                    thick: true,
-                    source: 'Yahoo!天気 2026.3 '
-                }
+                '3月': { tempRange: '-2~5°C', condition: '多雲有雪', season: '冬天', thick: true },
+                '7月': { tempRange: '18~26°C', condition: '涼爽', season: '夏天', thick: false },
+                '8月': { tempRange: '19~27°C', condition: '涼爽', season: '夏天', thick: false },
+                '12月': { tempRange: '-6~2°C', condition: '大雪', season: '冬天', thick: true },
+                '1月': { tempRange: '-8~0°C', condition: '嚴寒大雪', season: '冬天', thick: true },
+                '2月': { tempRange: '-7~1°C', condition: '多雪', season: '冬天', thick: true }
             },
             '曼谷': {
-                '3月': { 
-                    tempRange: '27~36°C', 
-                    condition: '炎熱乾燥',
-                    clothing: '短袖、短褲、防曬',
-                    thick: false,
-                    source: 'rp5.ru 2026.3 '
-                }
+                '3月': { tempRange: '26~36°C', condition: '炎熱', season: '夏天', thick: false },
+                '4月': { tempRange: '27~38°C', condition: '酷熱', season: '夏天', thick: false },
+                '5月': { tempRange: '26~35°C', condition: '炎熱有雨', season: '夏天', thick: false },
+                '6月': { tempRange: '25~34°C', condition: '雨季', season: '夏天', thick: false },
+                '7月': { tempRange: '25~33°C', condition: '雨季', season: '夏天', thick: false },
+                '12月': { tempRange: '21~32°C', condition: '涼爽乾燥', season: '冬天', thick: false }
             }
         };
 
-        // 2025年歷史天氣 (去年同月)
-        const weather2025 = {
-            '北京': {
-                '3月': { 
-                    tempRange: '3~15°C', 
-                    condition: '多雲轉小雨，早晚溫差大',
-                    clothing: '薄外套、毛衣、長袖',
-                    thick: false,
-                    source: '歷史天氣 2025.3 '
-                }
-            },
-            '北海道': {
-                '3月': { 
-                    tempRange: '-4~7°C', 
-                    condition: '多雪，天氣寒冷',
-                    clothing: '羽絨服、雪靴、厚手套',
-                    thick: true,
-                    source: 'Weather Spark 2025.3 '
-                }
-            },
-            '曼谷': {
-                '3月': { 
-                    tempRange: '26~36°C', 
-                    condition: '炎熱，偶有午後雷陣雨',
-                    clothing: '短袖、短褲、雨傘、防曬',
-                    thick: false,
-                    source: 'Weather Spark 2025.3 '
-                }
-            }
-        };
-
-        // ==================== 天氣查找函數 (自動回溯) ====================
         function getMonthFromDate(dateStr) {
             if (!dateStr) return null;
             const date = new Date(dateStr);
-            const month = date.getMonth() + 1; // 0-based
+            const month = date.getMonth() + 1;
             const monthMap = {
                 1: '1月', 2: '2月', 3: '3月', 4: '4月', 5: '5月', 6: '6月',
                 7: '7月', 8: '8月', 9: '9月', 10: '10月', 11: '11月', 12: '12月'
             };
-            return monthMap[month] || null;
+            return monthMap[month];
         }
 
-        // 模糊匹配目的地
-        function matchDestination(input, db) {
-            if (!input) return null;
-            for (let key in db) {
-                if (input.includes(key) || key.includes(input)) {
-                    return key;
+        function getWeather(dest, monthStr) {
+            if (!dest || !monthStr) return null;
+            for (let key in weatherDB) {
+                if (dest.includes(key) || key.includes(dest)) {
+                    if (weatherDB[key][monthStr]) {
+                        return weatherDB[key][monthStr];
+                    }
                 }
             }
             return null;
         }
 
-        // 主要天氣查找：先找2026，若無則找2025
-        function findWeather(dest, monthStr) {
-            if (!dest || !monthStr) return null;
-
-            // 先標準化目的地
-            const matchedDest2026 = matchDestination(dest, weather2026);
-            const matchedDest2025 = matchDestination(dest, weather2025);
-            
-            let weather = null;
-            let year = null;
-            let actualDest = null;
-
-            // 嘗試2026
-            if (matchedDest2026 && weather2026[matchedDest2026][monthStr]) {
-                weather = weather2026[matchedDest2026][monthStr];
-                year = 2026;
-                actualDest = matchedDest2026;
-            } 
-            // 若2026沒有，嘗試2025
-            else if (matchedDest2025 && weather2025[matchedDest2025][monthStr]) {
-                weather = weather2025[matchedDest2025][monthStr];
-                year = 2025;
-                actualDest = matchedDest2025;
+        // ==================== 根據天數決定行李箱尺寸 ====================
+        function getLuggageSizeByNights(nights) {
+            if (nights >= 1 && nights <= 14) {
+                return { size: '24～26吋', range: '7~14天短期長旅', desc: '最剛好' };
+            } else if (nights >= 15 && nights <= 30) {
+                return { size: '28吋', range: '15~30天一個月', desc: '最實用' };
+            } else if (nights >= 31 && nights <= 90) {
+                return { size: '29～30吋', range: '1~3個月長期旅居', desc: '適合長期' };
+            } else if (nights > 90) {
+                return { size: '32吋', range: '3個月以上～半年、一年', desc: '最大托運行李箱' };
+            } else {
+                return { size: '24吋', range: '短期旅行', desc: '一般建議' };
             }
-
-            if (weather) {
-                return {
-                    ...weather,
-                    year: year,
-                    note: year === 2025 ? '⚠️ 無當年度數據，採用去年同月歷史資料作為參考' : null
-                };
-            }
-            return null;
         }
 
-        // 根據天氣調整衣物
-        function getClothingAdvice(weather, baseItems) {
-            if (!weather) return baseItems;
+        // ==================== 超完整公式計算（分為跟身/行李） ====================
+        function calculateAllItems(nights, weather, gender, needSwim) {
+            const isFemale = gender === 'female';
+            const isWinter = weather ? weather.season === '冬天' : false;
+            const season = weather ? weather.season : (isWinter ? '冬天' : '夏天');
             
-            const newItems = JSON.parse(JSON.stringify(baseItems));
+            // 跟身類 (隨身攜帶)
+            const carryOn = {};
             
-            if (newItems.clothing) {
-                newItems.clothing = newItems.clothing.map(item => {
-                    if (item.name.includes('薄外套')) {
-                        if (weather.thick) {
-                            item.name = '🧥 厚外套 (羽絨/保暖)';
-                            item.baseCount = 1;
-                        } else {
-                            item.name = '🧥 薄外套 (防曬/防風)';
-                            item.baseCount = 1;
-                        }
-                    }
-                    if (item.name.includes('羽絨/厚外套')) {
-                        item.baseCount = weather.thick ? 1 : 0;
-                    }
-                    return item;
-                });
-            }
-            return newItems;
-        }
+            // 行李類 (托運/大件)
+            const checked = {};
 
-        // 基底物品
-        function getBaseItems(gender) {
-            const isFemale = (gender === 'female');
-            let clothing = [
-                { name: '👕 短袖上衣', baseCount: 2 },
-                { name: '👚 長袖上衣', baseCount: 1 },
-                { name: '👖 長褲', baseCount: 2 },
-                { name: '🩳 短褲', baseCount: 1 },
-                { name: '🧥 薄外套', baseCount: 1 },
-                { name: '🧣 羽絨/厚外套', baseCount: 0 }, 
-                { name: '🩲 內衣褲', baseCount: 3 },
-                { name: '🧦 襪子', baseCount: 3 },
-                { name: '😴 睡衣', baseCount: 1 }
+            // ----- 跟身類 -----
+            // 證件錢包 (全部跟身)
+            carryOn.documents = [
+                { name: '護照', check: true, icon: '🪪' },
+                { name: '身分證', check: true, icon: '🆔' },
+                { name: '健保卡', check: true, icon: '🏥' },
+                { name: '信用卡', count: 2, icon: '💳' },
+                { name: '現金', note: '預算×0.3', icon: '💰' },
+                { name: '飛機票', check: true, icon: '🎫' },
+                { name: '訂房紀錄', check: true, icon: '📄' }
             ];
 
+            // 3C隨身
+            carryOn.electronics = [
+                { name: '手機', count: 1, icon: '📱' },
+                { name: '充電線', count: 1, icon: '🔌' },
+                { name: '充電頭', count: 1, icon: '⚡' },
+                { name: '行動電源', count: 1, icon: '🔋' },
+                { name: '耳機', count: 1, icon: '🎧' }
+            ];
+
+            // 藥品隨身 (小量)
+            carryOn.medicine = [
+                { name: '個人藥物', count: nights, icon: '💉' },
+                { name: '創可貼', count: 5, icon: '🩹' }
+            ];
+
+            // 雜項隨身
+            carryOn.misc = [
+                { name: '口罩', count: nights + 5, icon: '😷' },
+                { name: '濕紙巾', count: 1, icon: '🧻' },
+                { name: '衛生紙', count: 1, icon: '🧻' },
+                { name: '水壺', count: 1, icon: '🥤' },
+                { name: '雨傘', count: 1, icon: '☂️' }
+            ];
+
+            // ----- 行李類 -----
+            // 衣物類 (全部行李)
+            checked.clothing = [
+                { name: '上衣', count: nights + 2, icon: '👕' },
+                { name: isFemale ? '褲/裙' : '褲子', count: Math.ceil(nights / 2), icon: isFemale ? '👗' : '👖' },
+                { name: '內衣褲', count: nights + 3, icon: '🩲' },
+                { name: '襪子', count: nights + 2, icon: '🧦' },
+                { name: '睡衣', count: Math.ceil(nights / 3), icon: '😴' },
+                { name: '外套', count: isWinter ? 2 : 1, icon: '🧥' },
+                { name: '帽子', count: 1, icon: '🧢' },
+                { name: '墨鏡', count: 1, icon: '🕶️' }
+            ];
+            
+            if (needSwim === 'yes') {
+                checked.clothing.push({ name: '泳衣', count: 1, icon: '🏊' });
+            }
+            
             if (isFemale) {
-                clothing.push(
-                    { name: '👙 胸罩', baseCount: 3 },
-                    { name: '🩸 衛生棉/條', baseCount: 1, hideCount: true }
-                );
+                checked.clothing.push({ name: '胸罩', count: nights + 3, icon: '👙' });
+                checked.clothing.push({ name: '衛生棉', check: true, icon: '🩸' });
             }
 
-            return {
-                clothing: clothing,
-                footwear: [
-                    { name: '👟 運動鞋/休閒鞋', baseCount: 1 },
-                    { name: '🩴 拖鞋', baseCount: 1 }
-                ],
-                toiletries: [
-                    { name: '🧴 洗髮精', baseCount: 1, ml: '50-80ml' },
-                    { name: '🧴 護髮素', baseCount: 1, ml: '50ml' },
-                    { name: '🧼 沐浴露', baseCount: 1, ml: '50-80ml' },
-                    { name: '🧖 洗面乳', baseCount: 1, ml: '30-50ml' },
-                    { name: '🪥 牙刷', baseCount: 1 },
-                    { name: '🦷 牙膏 (旅行裝)', baseCount: 1 },
-                    { name: '🧻 一次性毛巾/壓縮毛巾', baseCount: 2 },
-                    { name: '💇 梳子', baseCount: 1 }
-                ],
-                bags_acc: [
-                    { name: '🎒 隨身背包', baseCount: 1, max: 2 },
-                    { name: '🧢 帽子', baseCount: 1, max: 3 },
-                    { name: '💍 首飾/手錶', baseCount: 1, note: '依個人' }
-                ],
-                electronics: [
-                    { name: '📱 手機+充電器', baseCount: 1 },
-                    { name: '🔋 行動電源', baseCount: 1 },
-                    { name: '🎧 耳機', baseCount: 1 },
-                    { name: '📷 相機 (選配)', baseCount: 1, note: '選帶' }
-                ],
-                documents: [
-                    { name: '🪪 證件(身份證/護照)', baseCount: 1, hideCount: true },
-                    { name: '💳 信用卡/現金', baseCount: 1, hideCount: true }
-                ]
-            };
-        }
+            // 盥洗用品 (行李)
+            checked.toiletries = [
+                { name: '牙刷', count: 1, icon: '🪥' },
+                { name: '牙膏', count: 1, ml: '50g', icon: '🦷' },
+                { name: '洗髮精', count: 1, ml: '80ml', icon: '🧴' },
+                { name: '沐浴乳', count: 1, ml: '80ml', icon: '🧼' },
+                { name: '洗面乳', count: 1, ml: '50ml', icon: '🧖' },
+                { name: '化妝棉', count: nights * 5, icon: '📦' },
+                { name: '毛巾', count: nights >= 4 ? 2 : 1, icon: '🧻' },
+                { name: '刮鬍刀', count: 1, icon: '🪒' },
+                { name: '刮鬍泡', count: 1, ml: '50ml', icon: '🧴' },
+                { name: '梳子', count: 1, icon: '💇' }
+            ];
 
-        // 依天數調整 (固定2晚)
-        function adjustByNights(baseItems, nightsNum) {
-            const factor = Math.max(1, nightsNum / 2);
-            const result = {};
-
-            for (let category in baseItems) {
-                result[category] = baseItems[category].map(item => {
-                    let base = item.baseCount;
-                    let count = Math.max(1, Math.ceil(base * factor));
-
-                    if (item.name.includes('羽絨') || item.name.includes('厚外套')) {
-                        count = (item.baseCount === 0) ? 0 : Math.max(1, Math.ceil(item.baseCount * factor));
-                    }
-                    if (item.name.includes('牙刷') && nightsNum >= 6) count = 2;
-                    if (item.name.includes('牙膏') && nightsNum >= 6) count = 2;
-                    if (item.name.includes('一次性毛巾') && nightsNum >= 4) count = 3;
-
-                    if (category === 'footwear') {
-                        if (item.name.includes('運動鞋')) count = 1;
-                        if (item.name.includes('拖鞋')) count = 1;
-                    }
-                    if (item.max !== undefined) {
-                        count = Math.min(item.max, count);
-                    }
-                    return { ...item, count };
-                });
+            // 美妝保養 (行李)
+            if (isFemale) {
+                checked.beauty = [
+                    { name: '化妝水', count: 1, ml: '50ml', icon: '💧' },
+                    { name: '乳液', count: 1, ml: '50ml', icon: '🧴' },
+                    { name: '防曬', count: 1, ml: '50ml', icon: '☀️' },
+                    { name: '粉底', count: 1, ml: '30ml', icon: '💄' },
+                    { name: '口紅', count: 2, icon: '💋' },
+                    { name: '眼影', count: 1, icon: '👁️' },
+                    { name: '睫毛膏', count: 1, icon: '✨' },
+                    { name: '卸妝油', count: 1, ml: '50ml', icon: '🧴' }
+                ];
+            } else {
+                checked.beauty = [
+                    { name: '防曬', count: 1, ml: '50ml', icon: '☀️' }
+                ];
             }
-            return result;
+
+            // 藥品 (行李)
+            checked.medicine = [
+                { name: '腸胃藥', count: 1, icon: '💊' },
+                { name: '止痛藥', count: 1, icon: '💊' },
+                { name: '感冒藥', count: 1, icon: '💊' },
+                { name: '蚊蟲藥', count: 1, icon: '🦟' }
+            ];
+
+            // 3C選帶 (行李)
+            checked.electronics = [
+                { name: '平板/筆電', optional: true, icon: '💻' },
+                { name: '相機', optional: true, icon: '📷' },
+                { name: '記憶卡', optional: true, icon: '💾' },
+                { name: '轉接頭', count: 1, icon: '🔌' }
+            ];
+
+            // 雜項 (行李)
+            checked.misc = [
+                { name: '鎖頭', optional: true, icon: '🔒' },
+                { name: '筆+筆記本', optional: true, icon: '✏️' },
+                { name: '購物袋', count: 1, icon: '🛍️' }
+            ];
+
+            // 行李箱類
+            checked.luggage = [
+                { name: '登機箱', count: 1, icon: '🧳' },
+                { name: '背包', count: 1, icon: '🎒' },
+                { name: '收納袋', count: Math.ceil(nights / 2), icon: '📦' },
+                { name: '鞋袋', count: 1, icon: '👟' }
+            ];
+
+            return { carryOn, checked, season };
         }
 
-        // 渲染
-        function renderAnalysis(dest, dateStr, gender) {
-            dest = dest.trim() || '未知地點';
-            if (!dateStr) {
-                document.getElementById('resultContent').innerHTML = `<div class="error-msg">❌ 請選擇出發日期</div>`;
+        // ==================== 渲染結果 ====================
+        function renderResult(dest, dateStr, nights, gender, needSwim, remainingSpace) {
+            const destName = dest.trim() || '未知地點';
+            const nightsNum = parseInt(nights);
+            
+            if (isNaN(nightsNum) || nightsNum < 1) {
+                document.getElementById('resultContent').innerHTML = `<div class="error-msg">❌ 請輸入有效的過夜天數</div>`;
                 return;
             }
-
-            const monthStr = getMonthFromDate(dateStr);
-            const weather = findWeather(dest, monthStr);
             
-            const nightsNum = 2; // 固定2晚
-
-            const baseItems = getBaseItems(gender);
-            const weatherAdjustedItems = getClothingAdvice(weather, baseItems);
-            const finalItems = adjustByNights(weatherAdjustedItems, nightsNum);
-
-            // 計算總件數
-            let total = 0;
-            for (let cat in finalItems) {
-                if (Array.isArray(finalItems[cat])) {
-                    finalItems[cat].forEach(i => {
-                        if (!i.hideCount) total += (i.count || 0);
-                    });
-                }
+            if (!gender) {
+                document.getElementById('resultContent').innerHTML = `<div class="error-msg">❌ 請選擇性別</div>`;
+                return;
             }
-
-            const catTitle = {
-                clothing: gender === 'male' ? '👔 衣物 (天氣優化)' : '👔 衣物 (含女性用品)',
-                footwear: '👟 鞋類 (固定2雙)',
-                toiletries: '🧴 洗沐用品',
-                bags_acc: '🎒 包/帽/配飾',
-                electronics: '📱 電子產品',
-                documents: '📁 證件財務 (不計數量)'
-            };
-
+            
+            if (!needSwim) {
+                document.getElementById('resultContent').innerHTML = `<div class="error-msg">❌ 請選擇是否需要泳衣</div>`;
+                return;
+            }
+            
+            const monthStr = getMonthFromDate(dateStr);
+            const weather = getWeather(destName, monthStr);
+            
+            const { carryOn, checked, season } = calculateAllItems(nightsNum, weather, gender, needSwim);
+            
+            // 根據天數取得行李箱建議
+            const luggageInfo = getLuggageSizeByNights(nightsNum);
+            
+            // 計算總件數
+            let totalCarry = 0;
+            let totalChecked = 0;
+            
+            for (let cat in carryOn) {
+                carryOn[cat].forEach(item => {
+                    if (typeof item.count === 'number') totalCarry += item.count;
+                });
+            }
+            for (let cat in checked) {
+                checked[cat].forEach(item => {
+                    if (typeof item.count === 'number') totalChecked += item.count;
+                });
+            }
+            const total = totalCarry + totalChecked;
+            
             // 天氣區塊
             let weatherHtml = '';
             if (weather) {
-                const yearNote = weather.year === 2025 ? 
-                    `<span class="weather-note">⚠️ 參考 ${weather.year}年同月歷史資料</span>` : 
-                    `<span class="weather-note">📡 ${weather.year}年預報</span>`;
-                
                 weatherHtml = `
                     <div class="weather-summary">
-                        <div class="weather-icon">${weather.thick ? '❄️' : '☀️'}</div>
+                        <div class="weather-icon">${weather.season === '冬天' ? '❄️' : '☀️'}</div>
                         <div>
                             <span class="weather-temp">${weather.tempRange}</span>
                             <span class="weather-desc">${weather.condition}</span>
-                            <div style="font-size:0.9rem; color:#3d6a9c;">${weather.source || '氣象資料'} ${yearNote}</div>
+                            <div style="font-size:0.9rem;">季節：${weather.season}</div>
                         </div>
-                        <div class="weather-clothing">🧥 建議：${weather.clothing}</div>
+                        <div class="season-badge">${weather.season === '冬天' ? '❄️ 冬季衣物加厚' : '☀️ 夏季衣物輕薄'}</div>
                     </div>
                 `;
             } else {
                 weatherHtml = `
                     <div class="weather-summary" style="background:#fff0d0;">
                         <div class="weather-icon">🔍</div>
-                        <div>無法取得「${dest}」${monthStr}的天氣資料（無當年度及去年數據），請參考一般建議</div>
+                        <div>${monthStr} 季節：${season}（參考用）</div>
+                        <div class="season-badge">${season === '冬天' ? '❄️ 冬季' : '☀️ 夏季'}</div>
                     </div>
                 `;
             }
-
+            
+            // 類別標題與圖示
+            const catInfo = {
+                documents: { title: '📁 證件錢包', icon: '📁' },
+                electronics: { title: '📱 3C電子', icon: '📱' },
+                medicine: { title: '💊 藥品', icon: '💊' },
+                misc: { title: '🎒 雜項', icon: '🎒' },
+                clothing: { title: '👔 衣物類', icon: '👔' },
+                toiletries: { title: '🧴 盥洗用品', icon: '🧴' },
+                beauty: { title: '💄 美妝保養', icon: '💄' },
+                luggage: { title: '🧳 行李箱', icon: '🧳' }
+            };
+            
             let html = `
                 <div class="result-header">
-                    <h2>📋 個人化行李</h2>
+                    <h2>🧳 完整行李清單</h2>
                     <div class="dest-gender-badge">
-                        <span class="badge-dest">${dest}</span>
+                        <span class="badge-dest">${destName}</span>
                         <span class="badge-gender">${gender === 'male' ? '♂️ 男性' : '♀️ 女性'}</span>
                     </div>
                 </div>
                 ${weatherHtml}
-                <div class="summary-block">
-                    <span class="nights-badge">${dateStr} 出發</span>
-                    <span>🧳 總共約 <strong style="font-size:1.6rem;">${total}</strong> 件物品 (不含證件)</span>
+                
+                <!-- 行李箱建議區塊 (天數對應尺寸) -->
+                <div class="luggage-recommend">
+                    <div>
+                        <span style="font-size:1.2rem; color:#1d4e78;">🧳 建議行李箱尺寸：</span>
+                        <span class="luggage-size">${luggageInfo.size}</span>
+                        <div class="luggage-note">${luggageInfo.range} · ${luggageInfo.desc}</div>
+                    </div>
+                    <div class="luggage-detail">
+                        <div class="space-indicator">剩餘空間要求：${remainingSpace}%</div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span>使用率 ${100 - remainingSpace}%</span>
+                            <div class="progress-bar-bg">
+                                <div class="progress-fill" style="width:${100 - remainingSpace}%;"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="grid-cat">
+                
+                <div class="summary-block">
+                    <span class="nights-badge">${nightsNum} 晚</span>
+                    <span>總共 <strong style="font-size:1.8rem;">${Math.round(total)}</strong> 件物品</span>
+                    <span>（跟身 ${totalCarry} 件 · 行李 ${totalChecked} 件）</span>
+                </div>
+                
+                <div class="main-category">👤 跟身類（隨身攜帶）</div>
+                <div class="category-row">
             `;
-
-            for (let cat in finalItems) {
-                if (!finalItems[cat] || finalItems[cat].length === 0) continue;
-                html += `<div class="cat-card"><div class="cat-title">${catTitle[cat] || cat}</div><ul class="item-list">`;
-                finalItems[cat].forEach(item => {
-                    let countDisplay = item.count !== undefined ? item.count : item.baseCount;
-                    let mlText = item.ml ? ` <span class="item-ml">(${item.ml})</span>` : '';
+            
+            // 跟身類
+            for (let cat in carryOn) {
+                html += `<div class="item-group">`;
+                html += `<div class="group-title">${catInfo[cat]?.title || cat}</div>`;
+                html += `<div class="items-horizontal">`;
+                
+                carryOn[cat].forEach(item => {
+                    let content = `${item.icon} ${item.name}`;
                     
-                    if (item.hideCount) {
-                        html += `<li><span class="item-name">${item.name}${mlText}</span><span class="item-count">✓</span></li>`;
-                    } else {
-                        html += `<li><span class="item-name">${item.name}${mlText}</span><span class="item-count">${countDisplay}</span></li>`;
+                    if (item.count !== undefined) {
+                        content += ` <span class="count">${item.count}</span>`;
+                    } else if (item.check) {
+                        content += ` <span class="check">✓</span>`;
                     }
+                    
+                    if (item.ml) {
+                        content += ` <span class="ml-note">${item.ml}</span>`;
+                    }
+                    if (item.note) {
+                        content += ` <span class="ml-note">${item.note}</span>`;
+                    }
+                    if (item.optional) {
+                        content += ` <span class="optional">選帶</span>`;
+                    }
+                    
+                    html += `<span class="item-badge">${content}</span>`;
                 });
-                html += `</ul></div>`;
+                
+                html += `</div></div>`;
             }
-
+            
             html += `</div>`;
-            html += `<div class="footnote">🔹 衣物建議已根據${weather ? weather.year + '年' : ''}${monthStr}天氣調整。查無當年度數據時自動採用去年同月資料。證件與衛生棉僅標記✓。</div>`;
-
+            
+            // 行李類
+            html += `<div class="main-category">🧳 行李類（托運/大件）</div>`;
+            html += `<div class="category-row">`;
+            
+            for (let cat in checked) {
+                html += `<div class="item-group">`;
+                html += `<div class="group-title">${catInfo[cat]?.title || cat}</div>`;
+                html += `<div class="items-horizontal">`;
+                
+                checked[cat].forEach(item => {
+                    let content = `${item.icon} ${item.name}`;
+                    
+                    if (item.count !== undefined) {
+                        content += ` <span class="count">${item.count}</span>`;
+                    } else if (item.check) {
+                        content += ` <span class="check">✓</span>`;
+                    }
+                    
+                    if (item.ml) {
+                        content += ` <span class="ml-note">${item.ml}</span>`;
+                    }
+                    if (item.note) {
+                        content += ` <span class="ml-note">${item.note}</span>`;
+                    }
+                    if (item.optional) {
+                        content += ` <span class="optional">選帶</span>`;
+                    }
+                    
+                    html += `<span class="item-badge">${content}</span>`;
+                });
+                
+                html += `</div></div>`;
+            }
+            
+            html += `</div>`;
+            
+            html += `<div class="footnote">🔹 全部公式：上衣=天數+2 · 褲/裙=天數÷2進位 · 內衣褲=天數+3 · 襪子=天數+2 · 睡衣=天數÷3進位 · 外套${weather ? '依季節' : '1～2'} · 口罩=天數+5 · 收納袋=天數÷2 · 現金=預算×0.3 · 瓶罐標示ml</div>`;
+            
             document.getElementById('resultContent').innerHTML = html;
+        }
+
+        // ==================== 初始化 ====================
+        function setDefaultDate() {
+            const dateInput = document.getElementById('dateInput');
+            dateInput.value = '2026-07-15';
+        }
+
+        function getSelectedSpace() {
+            const radios = document.getElementsByName('space');
+            for (let radio of radios) {
+                if (radio.checked) {
+                    return parseInt(radio.value);
+                }
+            }
+            return 10;
         }
 
         function clearAll() {
             document.getElementById('destInput').value = '';
-            document.getElementById('dateInput').value = '';
-            document.getElementById('genderSelect').value = 'male';
+            setDefaultDate();
+            document.getElementById('nightsInput').value = '';
+            document.getElementById('genderSelect').value = '';
+            document.getElementById('swimSelect').value = '';
+            // 預設選中5%
+            document.querySelector('input[name="space"][value="5"]').checked = true;
             document.getElementById('resultContent').innerHTML = `
                 <div class="empty-state">
-                    <div class="big-icon">🌍✈️</div>
-                    <p>選擇目的地、日期和性別，點擊「分析天氣與行李」</p>
+                    <div class="big-icon">🧳✨</div>
+                    <p>請填寫上方資訊，點擊「分析行李與行李箱」查看結果</p>
                 </div>
             `;
         }
 
-        // 綁定
+        // ==================== 綁定事件 ====================
         const destInput = document.getElementById('destInput');
         const dateInput = document.getElementById('dateInput');
+        const nightsInput = document.getElementById('nightsInput');
         const genderSelect = document.getElementById('genderSelect');
+        const swimSelect = document.getElementById('swimSelect');
         const analyzeBtn = document.getElementById('analyzeBtn');
         const clearBtn = document.getElementById('clearBtn');
 
-        clearAll(); 
+        setDefaultDate();
 
-        analyzeBtn.addEventListener('click', () => {
-            renderAnalysis(destInput.value, dateInput.value, genderSelect.value);
+        analyzeBtn.addEventListener('click', function() {
+            const remainingSpace = getSelectedSpace();
+            renderResult(
+                destInput.value, 
+                dateInput.value, 
+                nightsInput.value, 
+                genderSelect.value,
+                swimSelect.value,
+                remainingSpace
+            );
         });
 
         clearBtn.addEventListener('click', clearAll);
 
         destInput.addEventListener('keypress', (e) => e.key === 'Enter' && analyzeBtn.click());
+        nightsInput.addEventListener('keypress', (e) => e.key === 'Enter' && analyzeBtn.click());
+
+        // 空間選項樣式切換
+        document.querySelectorAll('.space-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.space-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
     })();
 </script>
 </body>
