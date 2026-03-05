@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✈️ 旅行小tips · 實用清單</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #ecf5fa 0%, #ddebf3 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.8rem;
+        }
+        .travel-card {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 48px;
+            box-shadow: 0 28px 50px -15px rgba(1, 45, 70, 0.4);
+            padding: 2.5rem 2.2rem;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 2.2rem;
+            border-bottom: 3px dotted #a3c9dd;
+            padding-bottom: 1.3rem;
+            flex-wrap: wrap;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 650;
+            color: #123d50;
+            text-shadow: 2px 2px 0 rgba(255,255,255,0.5);
+            letter-spacing: 1px;
+        }
+        .hero span {
+            font-size: 2.6rem;
+        }
+
+        /* 網格 — 六大區塊 */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+        }
+
+        .tip-block {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            padding: 1.6rem 1.3rem 1.4rem 1.3rem;
+            box-shadow: 0 12px 22px -10px #264c5e33;
+            border: 1px solid rgba(255,255,255,0.9);
+            transition: 0.15s ease;
+        }
+        .tip-block:hover {
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 18px 28px -8px #1f5f7a66;
+        }
+
+        .block-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.1rem;
+            border-left: 6px solid;
+            padding-left: 0.9rem;
+        }
+        .block-header .emoji-deco {
+            font-size: 1.9rem;
+        }
+        .block-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #153e4f;
+        }
+
+        .tip-block:nth-child(1) .block-header { border-color: #2f86b3; } 
+        .tip-block:nth-child(2) .block-header { border-color: #da7d4a; } 
+        .tip-block:nth-child(3) .block-header { border-color: #c75b5b; } 
+        .tip-block:nth-child(4) .block-header { border-color: #4f9e72; } 
+        .tip-block:nth-child(5) .block-header { border-color: #aa7bc7; } 
+        .tip-block:nth-child(6) .block-header { border-color: #eca84c; } 
+
+        .tip-list {
+            list-style: none;
+        }
+        .tip-list li {
+            font-size: 0.98rem;
+            padding: 0.55rem 0 0.45rem 0.5rem;
+            border-bottom: 1px solid rgba(0, 30, 40, 0.08);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            color: #173b47;
+            line-height: 1.4;
+        }
+        .tip-list li:last-child {
+            border-bottom: none;
+        }
+        .list-marker {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+        }
+
+        .extra-note {
+            margin-top: 2.5rem;
+            background: #cbe0ea7e;
+            border-radius: 60px;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #0d384b;
+            border: 2px dashed #68a5c2;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .extra-note span {
+            font-size: 2rem;
+        }
+
+        .footer-deco {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+            opacity: 0.6;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 900px) {
+            .tips-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .tips-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2rem; }
+            .travel-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="travel-card">
+        <div class="hero">
+            <span>🧳✨</span>
+            <h1>旅行小tips</h1>
+            <span>🌏🔖</span>
+        </div>
+
+        <div class="tips-grid">
+            <!-- 1. 出發前 -->
+            <div class="tip-block">
+                <div class="block-header">
+                    <span class="emoji-deco">🔹</span>
+                    <h2>出發前</h2>
+                </div>
+                <ul class="tip-list">
+                    <li><span class="list-marker">📸</span>護照、身分證、簽證、健保卡拍照備份</li>
+                    <li><span class="list-marker">📱</span>手機開國際漫遊 / 買 eSIM</li>
+                    <li><span class="list-marker">💳</span>錢、信用卡分開放，不要全放一個包</li>
+                    <li><span class="list-marker">✈️</span>確認機票、飯店、接送車</li>
+                    <li><span class="list-marker">🏠</span>家裡：關水電、瓦斯、倒垃圾</li>
+                    <li><span class="list-marker">📋</span>印紙本訂單 / 飯店確認信</li>
+                    <li><span class="list-marker">🩹</span>簡易急救包（OK繃、止痛藥）</li>
+                    <li><span class="list-marker">☀️</span>查天氣預報，準備雨具或防曬</li>
+                </ul>
+            </div>
+
+            <!-- 2. 行李小技巧 -->
+            <div class="tip-block">
+                <div class="block-header">
+                    <span class="emoji-deco">🔹</span>
+                    <h2>行李小技巧</h2>
+                </div>
+                <ul class="tip-list">
+                    <li><span class="list-marker">💎</span>貴重物品永遠隨身帶</li>
+                    <li><span class="list-marker">🧴</span>盥洗用品用小瓶 / 分裝瓶</li>
+                    <li><span class="list-marker">💶</span>帶一點現金，很多地方不能刷卡</li>
+                    <li><span class="list-marker">🧥</span>外套、薄外套一定要帶，飛機/室內超冷</li>
+                    <li><span class="list-marker">👟</span>多帶一雙輕便鞋或拖鞋</li>
+                    <li><span class="list-marker">📦</span>壓縮袋省空間，分類打包</li>
+                    <li><span class="list-marker">🧢</span>帽子、太陽眼鏡防曬又遮陽</li>
+                </ul>
+            </div>
+
+            <!-- 3. 安全最重要 -->
+            <div class="tip-block">
+                <div class="block-header">
+                    <span class="emoji-deco">🔹</span>
+                    <h2>安全最重要</h2>
+                </div>
+                <ul class="tip-list">
+                    <li><span class="list-marker">🌙</span>不去偏僻小巷，晚上盡量結伴</li>
+                    <li><span class="list-marker">👤</span>不隨便跟陌生人走</li>
+                    <li><span class="list-marker">📱</span>手機、錢包隨時看好</li>
+                    <li><span class="list-marker">📞</span>記下當地警察、大使館電話</li>
+                    <li><span class="list-marker">📍</span>與家人朋友分享即時定位</li>
+                    <li><span class="list-marker">🚕</span>只搭正規計程車，不隨意攔車</li>
+                    <li><span class="list-marker">🔇</span>避免佩戴過於顯眼的貴重首飾</li>
+                    <li><span class="list-marker">🚨</span>隨身攜帶哨子或小型警報器</li>
+                </ul>
+            </div>
+
+            <!-- 4. 當地生活 -->
+            <div class="tip-block">
+                <div class="block-header">
+                    <span class="emoji-deco">🔹</span>
+                    <h2>當地生活</h2>
+                </div>
+                <ul class="tip-list">
+                    <li><span class="list-marker">🎎</span>尊重當地風俗、穿著</li>
+                    <li><span class="list-marker">💧</span>喝水盡量買瓶裝水</li>
+                    <li><span class="list-marker">🍽️</span>吃東西注意衛生</li>
+                    <li><span class="list-marker">🧻</span>隨身帶濕紙巾、衛生紙</li>
+                    <li><span class="list-marker">🗣️</span>學幾句基本問候語/謝謝</li>
+                    <li><span class="list-marker">💊</span>自備常用藥 (腸胃藥、過敏藥)</li>
+                    <li><span class="list-marker">🚰</span>確認當地自來水可否生飲</li>
+                    <li><span class="list-marker">💵</span>準備小鈔付小費或買小東西</li>
+                </ul>
+            </div>
+
+            <!-- 5. 手機與 3C -->
+            <div class="tip-block">
+                <div class="block-header">
+                    <span class="emoji-deco">🔹</span>
+                    <h2>手機與 3C</h2>
+                </div>
+                <ul class="tip-list">
+                    <li><span class="list-marker">🔋</span>行動電源充飽</li>
+                    <li><span class="list-marker">🔌</span>帶萬用轉接頭</li>
+                    <li><span class="list-marker">☁️</span>重要資料雲端備份</li>
+                    <li><span class="list-marker">📥</span>下載離線地圖、翻譯APP</li>
+                    <li><span class="list-marker">🎧</span>飛機上必備有線耳機（相容機上娛樂）</li>
+                    <li><span class="list-marker">📸</span>記憶卡/雲端空間留足夠容量</li>
+                    <li><span class="list-marker">📲</span>確認手機SIM卡槽是否適用eSIM/卡針</li>
+                </ul>
+            </div>
+
+            <!-- 6. 回國前 -->
+            <div class="tip-block">
+                <div class="block-header">
+                    <span class="emoji-deco">🔹</span>
+                    <h2>回國前</h2>
+                </div>
+                <ul class="tip-list">
+                    <li><span class="list-marker">🔍</span>檢查房間有沒有遺漏東西</li>
+                    <li><span class="list-marker">🧾</span>退稅單記得蓋章</li>
+                    <li><span class="list-marker">⚖️</span>行李秤重，避免超重罰款</li>
+                    <li><span class="list-marker">📬</span>明信片 / 紀念品提早寄出</li>
+                    <li><span class="list-marker">🔋</span>歸還租用的WiFi機或翻譯機</li>
+                    <li><span class="list-marker">💧</span>清空水壺，避免託運漏出</li>
+                    <li><span class="list-marker">📝</span>保留登機證 (部分退稅或積分用)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 額外小提醒 -->
+        <div class="extra-note">
+            <span>🌟</span> 多一瓶折疊購物袋 · 購物不用塑膠袋 <span>🌱</span>
+            <span style="font-size: 1rem; background: #fff3cf; padding: 0.3rem 1rem; border-radius: 40px;">➕ 帶一支空水壺，過安檢後裝水</span>
+            <span>✨</span>
+        </div>
+        <div class="footer-deco">
+            <span>✈️ 慢慢核對，旅途更從容 · 每一項都是實用小提醒</span>
+        </div>
+    </div>
+</body>
+</html>

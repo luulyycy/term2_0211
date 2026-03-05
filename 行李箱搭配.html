@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>怎麼辦！我的行李 · 空白輸入版</title>
+    <title>怎麼辦！我的行李 · 行李打包神器</title>
     <style>
         * {
             margin: 0;
@@ -402,18 +402,43 @@
             border: 1px solid #eef4ff;
             flex: 1 1 280px;
             min-width: 280px;
+            position: relative;
+            transition: 0.2s;
+        }
+        
+        .item-group.checked {
+            background: #f0f9f0;
+            border-color: #2ecc71;
+            opacity: 0.9;
+        }
+        
+        .group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #deecfd;
+            padding-bottom: 6px;
         }
         
         .group-title {
             font-weight: 700;
             color: #1e4e78;
-            margin-bottom: 12px;
             font-size: 1.1rem;
-            border-bottom: 2px solid #deecfd;
-            padding-bottom: 6px;
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+        
+        .group-checkbox {
+            display: flex;
+            align-items: center;
+        }
+        .group-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #1f527c;
         }
         
         .items-horizontal {
@@ -433,6 +458,7 @@
             border: 1px solid #d4e4fc;
             color: #1d4970;
             white-space: nowrap;
+            transition: 0.2s;
         }
         
         .item-badge .count {
@@ -443,6 +469,12 @@
             font-size: 0.8rem;
             font-weight: 600;
             margin-left: 4px;
+            cursor: pointer;
+        }
+        
+        .item-badge .count.editable {
+            background: #e68a2e;
+            cursor: pointer;
         }
         
         .item-badge .check {
@@ -472,6 +504,29 @@
             margin-left: 4px;
         }
         
+        .edit-icon {
+            font-size: 0.8rem;
+            color: #1f527c;
+            margin-left: 4px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.2s;
+        }
+        .edit-icon:hover {
+            opacity: 1;
+            color: #e68a2e;
+        }
+        
+        .edit-input {
+            width: 50px;
+            padding: 2px 5px;
+            border-radius: 20px;
+            border: 1px solid #1f527c;
+            text-align: center;
+            font-size: 0.8rem;
+            margin-left: 4px;
+        }
+        
         .footnote {
             margin-top: 25px;
             background: #dfedfd;
@@ -483,6 +538,45 @@
             clear: both;
         }
         
+        .disclaimer {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #888;
+            text-align: center;
+            font-style: italic;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }
+
+        /* PDF 按鈕容器 - 放在最下方 */
+        .pdf-bottom-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-pdf-bottom {
+            background: #c0392b;
+            border: none;
+            padding: 16px 50px;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            box-shadow: 0 15px 25px -10px #7f2a1f;
+            transition: 0.15s;
+            border: 1px solid #e67e6b;
+        }
+        .btn-pdf-bottom:hover {
+            background: #a53125;
+            transform: scale(1.02);
+        }
+        
         .error-msg {
             background: #ffe7e3;
             color: #b14040;
@@ -492,14 +586,16 @@
             font-weight: 500;
         }
     </style>
+    <!-- 引入 html2pdf 庫 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 <div class="glass-card">
     <h1>
         😱 怎麼辦！我的行李
-        <span class="badge-free">空白輸入版</span>
+        <span class="badge-free">行李打包神器</span>
     </h1>
-    <div class="sub-headline">只要經過小小的計算，可以幫你輕鬆解決旅行帶東西的問題</div>
+    <div class="sub-headline">可以幫你輕鬆解決旅行帶東西的問題</div>
 
     <div class="input-panel">
         <div class="flex-row">
@@ -537,13 +633,13 @@
         <div style="margin: 15px 0 5px 0; font-weight: 600; color: #1e4468;">🧳 希望行李箱剩餘空間：</div>
         <div class="space-options" id="spaceOptions">
             <label class="space-option selected">
-                <input type="radio" name="space" value="5" checked> 5%
+                <input type="radio" name="space" value="5" checked> 5% (維持原數量)
             </label>
             <label class="space-option">
-                <input type="radio" name="space" value="10"> 10%
+                <input type="radio" name="space" value="10"> 10% (×0.95 可多帶)
             </label>
             <label class="space-option">
-                <input type="radio" name="space" value="20"> 20%
+                <input type="radio" name="space" value="20"> 20% (×0.9 更寬鬆)
             </label>
         </div>
 
@@ -558,6 +654,11 @@
             <div class="big-icon">🧳✨</div>
             <p>請填寫上方資訊，點擊「分析行李與行李箱」查看結果</p>
         </div>
+    </div>
+    
+    <!-- PDF 匯出按鈕放在頁面最下方 -->
+    <div class="pdf-bottom-container">
+        <button class="btn-pdf-bottom" id="pdfBottomBtn" onclick="exportToPDF()"><span>📄</span> 匯出為 PDF</button>
     </div>
 </div>
 
@@ -632,8 +733,18 @@
             }
         }
 
+        // ==================== 空間影響係數 ====================
+        function getSpaceFactor(remainingSpace) {
+            switch(remainingSpace) {
+                case 5: return 1.0;      // 5%: 維持原數量
+                case 10: return 0.95;     // 10%: ×0.95
+                case 20: return 0.9;      // 20%: ×0.9
+                default: return 1.0;
+            }
+        }
+
         // ==================== 超完整公式計算（分為跟身/行李） ====================
-        function calculateAllItems(nights, weather, gender, needSwim) {
+        function calculateAllItems(nights, weather, gender, needSwim, spaceFactor) {
             const isFemale = gender === 'female';
             const isWinter = weather ? weather.season === '冬天' : false;
             const season = weather ? weather.season : (isWinter ? '冬天' : '夏天');
@@ -650,7 +761,7 @@
                 { name: '護照', check: true, icon: '🪪' },
                 { name: '身分證', check: true, icon: '🆔' },
                 { name: '健保卡', check: true, icon: '🏥' },
-                { name: '信用卡', count: 2, icon: '💳' },
+                { name: '信用卡', count: Math.max(1, Math.floor(2 * spaceFactor)), icon: '💳' },
                 { name: '現金', note: '預算×0.3', icon: '💰' },
                 { name: '飛機票', check: true, icon: '🎫' },
                 { name: '訂房紀錄', check: true, icon: '📄' }
@@ -667,13 +778,13 @@
 
             // 藥品隨身 (小量)
             carryOn.medicine = [
-                { name: '個人藥物', count: nights, icon: '💉' },
-                { name: '創可貼', count: 5, icon: '🩹' }
+                { name: '個人藥物', count: Math.max(1, Math.floor(nights * spaceFactor)), icon: '💉' },
+                { name: '創可貼', count: Math.max(1, Math.floor(5 * spaceFactor)), icon: '🩹' }
             ];
 
             // 雜項隨身
             carryOn.misc = [
-                { name: '口罩', count: nights + 5, icon: '😷' },
+                { name: '口罩', count: Math.max(1, Math.floor((nights + 5) * spaceFactor)), icon: '😷' },
                 { name: '濕紙巾', count: 1, icon: '🧻' },
                 { name: '衛生紙', count: 1, icon: '🧻' },
                 { name: '水壺', count: 1, icon: '🥤' },
@@ -683,12 +794,12 @@
             // ----- 行李類 -----
             // 衣物類 (全部行李)
             checked.clothing = [
-                { name: '上衣', count: nights + 2, icon: '👕' },
-                { name: isFemale ? '褲/裙' : '褲子', count: Math.ceil(nights / 2), icon: isFemale ? '👗' : '👖' },
-                { name: '內衣褲', count: nights + 3, icon: '🩲' },
-                { name: '襪子', count: nights + 2, icon: '🧦' },
-                { name: '睡衣', count: Math.ceil(nights / 3), icon: '😴' },
-                { name: '外套', count: isWinter ? 2 : 1, icon: '🧥' },
+                { name: '上衣', count: Math.max(1, Math.floor((nights + 2) * spaceFactor)), icon: '👕' },
+                { name: isFemale ? '褲/裙' : '褲子', count: Math.max(1, Math.floor(Math.ceil(nights / 2) * spaceFactor)), icon: isFemale ? '👗' : '👖' },
+                { name: '內衣褲', count: Math.max(1, Math.floor((nights + 3) * spaceFactor)), icon: '🩲' },
+                { name: '襪子', count: Math.max(1, Math.floor((nights + 2) * spaceFactor)), icon: '🧦' },
+                { name: '睡衣', count: Math.max(1, Math.floor(Math.ceil(nights / 3) * spaceFactor)), icon: '😴' },
+                { name: '外套', count: Math.max(1, Math.floor((isWinter ? 2 : 1) * spaceFactor)), icon: '🧥' },
                 { name: '帽子', count: 1, icon: '🧢' },
                 { name: '墨鏡', count: 1, icon: '🕶️' }
             ];
@@ -698,7 +809,7 @@
             }
             
             if (isFemale) {
-                checked.clothing.push({ name: '胸罩', count: nights + 3, icon: '👙' });
+                checked.clothing.push({ name: '胸罩', count: Math.max(1, Math.floor((nights + 3) * spaceFactor)), icon: '👙' });
                 checked.clothing.push({ name: '衛生棉', check: true, icon: '🩸' });
             }
 
@@ -709,8 +820,8 @@
                 { name: '洗髮精', count: 1, ml: '80ml', icon: '🧴' },
                 { name: '沐浴乳', count: 1, ml: '80ml', icon: '🧼' },
                 { name: '洗面乳', count: 1, ml: '50ml', icon: '🧖' },
-                { name: '化妝棉', count: nights * 5, icon: '📦' },
-                { name: '毛巾', count: nights >= 4 ? 2 : 1, icon: '🧻' },
+                { name: '化妝棉', count: Math.max(1, Math.floor(nights * 5 * spaceFactor)), icon: '📦' },
+                { name: '毛巾', count: nights >= 4 ? Math.max(1, Math.floor(2 * spaceFactor)) : 1, icon: '🧻' },
                 { name: '刮鬍刀', count: 1, icon: '🪒' },
                 { name: '刮鬍泡', count: 1, ml: '50ml', icon: '🧴' },
                 { name: '梳子', count: 1, icon: '💇' }
@@ -723,7 +834,7 @@
                     { name: '乳液', count: 1, ml: '50ml', icon: '🧴' },
                     { name: '防曬', count: 1, ml: '50ml', icon: '☀️' },
                     { name: '粉底', count: 1, ml: '30ml', icon: '💄' },
-                    { name: '口紅', count: 2, icon: '💋' },
+                    { name: '口紅', count: Math.max(1, Math.floor(2 * spaceFactor)), icon: '💋' },
                     { name: '眼影', count: 1, icon: '👁️' },
                     { name: '睫毛膏', count: 1, icon: '✨' },
                     { name: '卸妝油', count: 1, ml: '50ml', icon: '🧴' }
@@ -736,10 +847,10 @@
 
             // 藥品 (行李)
             checked.medicine = [
-                { name: '腸胃藥', count: 1, icon: '💊' },
-                { name: '止痛藥', count: 1, icon: '💊' },
-                { name: '感冒藥', count: 1, icon: '💊' },
-                { name: '蚊蟲藥', count: 1, icon: '🦟' }
+                { name: '腸胃藥', count: Math.max(1, Math.floor(1 * spaceFactor)), icon: '💊' },
+                { name: '止痛藥', count: Math.max(1, Math.floor(1 * spaceFactor)), icon: '💊' },
+                { name: '感冒藥', count: Math.max(1, Math.floor(1 * spaceFactor)), icon: '💊' },
+                { name: '蚊蟲藥', count: Math.max(1, Math.floor(1 * spaceFactor)), icon: '🦟' }
             ];
 
             // 3C選帶 (行李)
@@ -761,14 +872,14 @@
             checked.luggage = [
                 { name: '登機箱', count: 1, icon: '🧳' },
                 { name: '背包', count: 1, icon: '🎒' },
-                { name: '收納袋', count: Math.ceil(nights / 2), icon: '📦' },
+                { name: '收納袋', count: Math.max(1, Math.floor(Math.ceil(nights / 2) * spaceFactor)), icon: '📦' },
                 { name: '鞋袋', count: 1, icon: '👟' }
             ];
 
             return { carryOn, checked, season };
         }
 
-        // ==================== 渲染結果 ====================
+        // ==================== 渲染結果（包含類別checkbox） ====================
         function renderResult(dest, dateStr, nights, gender, needSwim, remainingSpace) {
             const destName = dest.trim() || '未知地點';
             const nightsNum = parseInt(nights);
@@ -791,7 +902,10 @@
             const monthStr = getMonthFromDate(dateStr);
             const weather = getWeather(destName, monthStr);
             
-            const { carryOn, checked, season } = calculateAllItems(nightsNum, weather, gender, needSwim);
+            // 取得空間影響係數
+            const spaceFactor = getSpaceFactor(remainingSpace);
+            
+            const { carryOn, checked, season } = calculateAllItems(nightsNum, weather, gender, needSwim, spaceFactor);
             
             // 根據天數取得行李箱建議
             const luggageInfo = getLuggageSizeByNights(nightsNum);
@@ -849,6 +963,7 @@
             };
             
             let html = `
+                <div id="pdfContent">
                 <div class="result-header">
                     <h2>🧳 完整行李清單</h2>
                     <div class="dest-gender-badge">
@@ -864,6 +979,7 @@
                         <span style="font-size:1.2rem; color:#1d4e78;">🧳 建議行李箱尺寸：</span>
                         <span class="luggage-size">${luggageInfo.size}</span>
                         <div class="luggage-note">${luggageInfo.range} · ${luggageInfo.desc}</div>
+                        <div class="luggage-note" style="color:#e68a2e;">空間係數：${spaceFactor === 1 ? '5% (原數量)' : spaceFactor === 0.95 ? '10% (×0.95)' : '20% (×0.9)'}</div>
                     </div>
                     <div class="luggage-detail">
                         <div class="space-indicator">剩餘空間要求：${remainingSpace}%</div>
@@ -878,25 +994,30 @@
                 
                 <div class="summary-block">
                     <span class="nights-badge">${nightsNum} 晚</span>
-                    <span>總共 <strong style="font-size:1.8rem;">${Math.round(total)}</strong> 件物品</span>
+                    <span>總共 <strong style="font-size:1.8rem;" id="totalItems">${Math.round(total)}</strong> 件物品</span>
                     <span>（跟身 ${totalCarry} 件 · 行李 ${totalChecked} 件）</span>
                 </div>
                 
-                <div class="main-category">👤 跟身類（隨身攜帶）</div>
+                <div class="main-category">👤 跟身類（隨身攜帶）<span style="font-size:0.9rem; margin-left:15px; color:#666;">✎ 點擊數字可修改 · 類別右上角可勾選</span></div>
                 <div class="category-row">
             `;
             
             // 跟身類
             for (let cat in carryOn) {
-                html += `<div class="item-group">`;
+                const catId = `carry-${cat}`;
+                html += `<div class="item-group" id="${catId}-group">`;
+                html += `<div class="group-header">`;
                 html += `<div class="group-title">${catInfo[cat]?.title || cat}</div>`;
+                html += `<div class="group-checkbox"><input type="checkbox" onchange="toggleCategoryCheck('${catId}-group', this.checked)"></div>`;
+                html += `</div>`;
                 html += `<div class="items-horizontal">`;
                 
-                carryOn[cat].forEach(item => {
+                carryOn[cat].forEach((item, index) => {
+                    const itemId = `carry-${cat}-${index}`;
                     let content = `${item.icon} ${item.name}`;
                     
                     if (item.count !== undefined) {
-                        content += ` <span class="count">${item.count}</span>`;
+                        content += ` <span class="count editable" id="${itemId}" onclick="editItemCount('${itemId}', ${item.count})">${item.count} ✎</span>`;
                     } else if (item.check) {
                         content += ` <span class="check">✓</span>`;
                     }
@@ -920,19 +1041,24 @@
             html += `</div>`;
             
             // 行李類
-            html += `<div class="main-category">🧳 行李類（托運/大件）</div>`;
+            html += `<div class="main-category">🧳 行李類（托運/大件）<span style="font-size:0.9rem; margin-left:15px; color:#666;">✎ 點擊數字可修改 · 類別右上角可勾選</span></div>`;
             html += `<div class="category-row">`;
             
             for (let cat in checked) {
-                html += `<div class="item-group">`;
+                const catId = `checked-${cat}`;
+                html += `<div class="item-group" id="${catId}-group">`;
+                html += `<div class="group-header">`;
                 html += `<div class="group-title">${catInfo[cat]?.title || cat}</div>`;
+                html += `<div class="group-checkbox"><input type="checkbox" onchange="toggleCategoryCheck('${catId}-group', this.checked)"></div>`;
+                html += `</div>`;
                 html += `<div class="items-horizontal">`;
                 
-                checked[cat].forEach(item => {
+                checked[cat].forEach((item, index) => {
+                    const itemId = `checked-${cat}-${index}`;
                     let content = `${item.icon} ${item.name}`;
                     
                     if (item.count !== undefined) {
-                        content += ` <span class="count">${item.count}</span>`;
+                        content += ` <span class="count editable" id="${itemId}" onclick="editItemCount('${itemId}', ${item.count})">${item.count} ✎</span>`;
                     } else if (item.check) {
                         content += ` <span class="check">✓</span>`;
                     }
@@ -954,11 +1080,104 @@
             }
             
             html += `</div>`;
+            html += `</div>`; // 關閉 pdfContent
             
-            html += `<div class="footnote">🔹 全部公式：上衣=天數+2 · 褲/裙=天數÷2進位 · 內衣褲=天數+3 · 襪子=天數+2 · 睡衣=天數÷3進位 · 外套${weather ? '依季節' : '1～2'} · 口罩=天數+5 · 收納袋=天數÷2 · 現金=預算×0.3 · 瓶罐標示ml</div>`;
+            html += `<div class="footnote">🔹 全部公式：上衣=天數+2 · 褲/裙=天數÷2進位 · 內衣褲=天數+3 · 襪子=天數+2 · 睡衣=天數÷3進位 · 外套${weather ? '依季節' : '1～2'} · 口罩=天數+5 · 收納袋=天數÷2 · 現金=預算×0.3 · 瓶罐標示ml · 空間係數：5%原數量 / 10%×0.95 / 20%×0.9</div>`;
+            html += `<div class="disclaimer">⚠️ 數據僅供參考 · 可依個人需求點擊數字修改數量 · 類別右上角可整體勾選</div>`;
             
             document.getElementById('resultContent').innerHTML = html;
         }
+
+        // ==================== 類別勾選函數 ====================
+        window.toggleCategoryCheck = function(groupId, isChecked) {
+            const group = document.getElementById(groupId);
+            if (group) {
+                if (isChecked) {
+                    group.classList.add('checked');
+                } else {
+                    group.classList.remove('checked');
+                }
+            }
+        };
+
+        // ==================== 全域編輯函數 ====================
+        window.editItemCount = function(elementId, currentCount) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            // 建立輸入框
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.value = currentCount;
+            input.min = 0;
+            input.max = 99;
+            input.className = 'edit-input';
+            input.style.width = '50px';
+            
+            // 取代原本的數字
+            element.innerHTML = '';
+            element.appendChild(input);
+            input.focus();
+            
+            // 當失去焦點或按 Enter 時儲存
+            input.addEventListener('blur', function() {
+                saveNewCount(element, input.value, currentCount);
+            });
+            
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    saveNewCount(element, input.value, currentCount);
+                }
+            });
+        };
+
+        function saveNewCount(element, newValue, oldValue) {
+            const newCount = parseInt(newValue);
+            if (!isNaN(newCount) && newCount >= 0) {
+                element.innerHTML = `${newCount} ✎`;
+                updateTotalCount();
+            } else {
+                element.innerHTML = `${oldValue} ✎`;
+            }
+        }
+
+        function updateTotalCount() {
+            // 重新計算總件數
+            let total = 0;
+            document.querySelectorAll('.count.editable').forEach(el => {
+                const countText = el.innerText.replace('✎', '').trim();
+                const count = parseInt(countText);
+                if (!isNaN(count)) total += count;
+            });
+            
+            const totalElement = document.getElementById('totalItems');
+            if (totalElement) {
+                totalElement.innerText = total;
+            }
+        }
+
+        // ==================== PDF 匯出函數 ====================
+        window.exportToPDF = function() {
+            const element = document.getElementById('pdfContent');
+            if (!element) {
+                alert('沒有可匯出的內容，請先分析行李');
+                return;
+            }
+            
+            const dest = document.getElementById('destInput').value.trim() || '未知地點';
+            const date = document.getElementById('dateInput').value;
+            const nights = document.getElementById('nightsInput').value;
+            
+            const opt = {
+                margin: [0.5, 0.5, 0.5, 0.5],
+                filename: `${dest}_行李清單_${nights}晚_${date}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, letterRendering: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
+        };
 
         // ==================== 初始化 ====================
         function setDefaultDate() {
@@ -973,7 +1192,7 @@
                     return parseInt(radio.value);
                 }
             }
-            return 10;
+            return 5; // 預設
         }
 
         function clearAll() {
