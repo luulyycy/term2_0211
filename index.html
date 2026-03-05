@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>去旅行！爽！ · 輕鬆準備・完美旅程</title>
+    <style>
+        /* 重置 & 字體 — 純CSS RWD */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #1e293b;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* 淺藍輔助樣式 */
+        .bg-soft-blue {
+            background-color: #f0f9ff;
+        }
+        .border-soft-blue {
+            border-color: #b8dff0;
+        }
+        .badge-blue {
+            background-color: #e1f0fa;
+            color: #045a8b;
+            font-weight: 500;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* 導航 — 精簡，僅保留站名 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e2f0fa;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .site-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(145deg, #0c4a6e, #0284c7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .site-tagline {
+            font-size: 0.95rem;
+            color: #3b6f96;
+            background: #ebf5ff;
+            padding: 4px 12px;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+
+        section {
+            padding: 64px 0;
+        }
+
+        .hero {
+            padding: 50px 0 70px;
+            background: linear-gradient(135deg, #ffffff 0%, #f6fcff 100%);
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #0b3b5c;
+            max-width: 800px;
+        }
+        .hero .lead {
+            font-size: 1.6rem;
+            margin-top: 15px;
+            color: #0a5d8a;
+            font-weight: 400;
+            background: rgba(255,255,255,0.7);
+            display: inline-block;
+            padding: 8px 28px 8px 8px;
+            border-radius: 60px;
+            backdrop-filter: blur(2px);
+        }
+        .hero .lead span {
+            background-color: #c2e2fd;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            margin-right: 8px;
+            color: #01497c;
+        }
+
+        /* 問題區 */
+        .problem-box {
+            background-color: #f0f9ff;
+            border-radius: 60px 60px 60px 20px;
+            padding: 40px 40px;
+            box-shadow: 0 8px 18px -8px rgba(0,79,112,0.15);
+            border: 1px solid #cde5f5;
+        }
+        .problem-text {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #1e405b;
+        }
+        .problem-text p {
+            margin-top: 16px;
+            position: relative;
+            padding-left: 28px;
+        }
+        .problem-text p::before {
+            content: "🧳";
+            position: absolute;
+            left: -8px;
+            top: 0;
+            font-size: 1.8rem;
+        }
+
+        /* 卡片區域 — 兩張卡 */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 40px;
+            padding: 30px 25px 35px;
+            flex: 1 1 300px;
+            max-width: 450px;
+            box-shadow: 0 18px 30px -12px rgba(3, 105, 161, 0.12);
+            border: 1px solid #d7ecfc;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: #9ac9f0;
+        }
+        .card-icon {
+            font-size: 3.3rem;
+            margin-bottom: 10px;
+        }
+        .feature-card h3 {
+            font-size: 2rem;
+            font-weight: 650;
+            color: #0369a1;
+            margin-bottom: 12px;
+            border-left: 8px solid #7dc2f0;
+            padding-left: 16px;
+        }
+        .feature-card p {
+            color: #2c526e;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        /* 流程區塊 — 統一風格 (紅圈樣式) */
+        .process-block {
+            background: #f4fafe;
+            border-radius: 30px;
+            padding: 20px 18px;
+            margin: 15px 0 10px;
+            border-left: 4px solid #9ac9f0;
+        }
+        .process-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #014b7c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .process-title::before {
+            content: "⚙️";
+            font-size: 1.2rem;
+        }
+        
+        /* 標籤雲 — 用於流程項目 */
+        .tags-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .tag-item {
+            background: #dcedfc;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #014d80;
+            border: 1px solid #b0d2f0;
+            box-shadow: 0 2px 4px rgba(0,60,110,0.04);
+        }
+        
+        /* 步驟列表 */
+        .steps-list {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 12px;
+            font-size: 0.95rem;
+            color: #1d4d72;
+            background: #e9f2fa;
+            padding: 12px 16px;
+            border-radius: 50px;
+            margin-top: 8px;
+        }
+        .step-number {
+            background: #0b79b5;
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-right: 4px;
+        }
+        .step-arrow {
+            color: #3882b5;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        /* 旅行小tips 專用說明文字 (與行李卡片風格一致) */
+        .tips-description {
+            font-size: 1rem;
+            color: #1d4d72;
+            background: #e9f2fa;
+            padding: 14px 18px;
+            border-radius: 50px;
+            margin: 15px 0 5px;
+            border: 1px solid #c0dcf5;
+            line-height: 1.6;
+        }
+
+        /* 進入按鈕 */
+        .card-btn {
+            background-color: #cde6fc;
+            border: none;
+            border-radius: 60px;
+            padding: 14px 20px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #014d80;
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            border: 1px solid #98c1e0;
+            box-shadow: 0 4px 8px rgba(0, 103, 163, 0.08);
+            letter-spacing: 1px;
+            width: 100%;
+        }
+        .card-btn:hover {
+            background-color: #b3d8f5;
+            box-shadow: 0 8px 14px rgba(1, 84, 136, 0.15);
+            border-color: #3882b5;
+        }
+
+        /* 團隊介紹 — 如來佛組 + 兩位成員 */
+        .team-section {
+            background: #f1f9ff;
+            border-radius: 120px 20px 120px 20px;
+            padding: 60px 40px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .team-buddha {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #05456e;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.7);
+            display: inline-block;
+            padding: 12px 48px;
+            border-radius: 60px;
+            box-shadow: 0 4px 12px #aacaea;
+            border: 1px solid #bddcf5;
+        }
+        .team-buddha::before {
+            content: "✨ ";
+            font-size: 2.2rem;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .team-buddha::after {
+            content: " ✨";
+            font-size: 2.2rem;
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            font-size: 2rem;
+            font-weight: 550;
+            color: #0a4c77;
+            margin-top: 20px;
+        }
+        .team-members div {
+            background: white;
+            padding: 18px 40px;
+            border-radius: 60px;
+            box-shadow: 0 4px 10px #b9dcf5;
+            border: 1px solid #b0d2ed;
+        }
+
+        .footer {
+            border-top: 2px solid #c3def5;
+            padding: 30px 0;
+            color: #2c5779;
+            background: #f6fbfe;
+            text-align: center;
+        }
+
+        /* RWD */
+        @media (max-width: 680px) {
+            .navbar {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+            .logo-area {
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            .hero .lead {
+                font-size: 1.3rem;
+                line-height: 1.8;
+            }
+            .team-buddha {
+                font-size: 2.2rem;
+                padding: 8px 25px;
+            }
+            .team-buddha::before, .team-buddha::after {
+                font-size: 1.8rem;
+            }
+            .team-members {
+                gap: 25px;
+            }
+            .team-members div {
+                padding: 14px 22px;
+                font-size: 1.5rem;
+                width: 100%;
+            }
+            .problem-text {
+                font-size: 1.2rem;
+            }
+            .steps-list {
+                flex-wrap: wrap;
+                border-radius: 30px;
+            }
+        }
+        @media (max-width: 420px) {
+            .container {
+                padding: 0 18px;
+            }
+            .feature-card h3 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 導航欄 — 完全移除探索功能連結，只剩站名與標語 -->
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo-area">
+                <span class="site-name">去旅行！爽！</span>
+                <span class="site-tagline">幫你解決忘帶&景點選擇</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Hero 區域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>享受旅行，<br>輕鬆準備</h1>
+            <div class="lead">
+                <span>怕忘記帶物品？</span> 如來佛組幫你解決！
+            </div>
+            <p style="margin-top: 30px; font-size: 1.2rem; color: #2d6b95;">⚡ 個人化行李清單 + 固定旅行小tips</p>
+        </div>
+    </section>
+
+    <!-- 問題描述區 -->
+    <div class="container">
+        <div class="problem-box">
+            <div class="problem-text">
+                「每次收行李總怕漏東漏西？最後塞爆行李箱卻又忘了牙膏、轉接頭…<br>
+                到了目的地還得煩惱哪些景點值得去？沒有在地tips常常踩雷😫<br>
+                旅行前的焦慮，我們懂 —— 所以打造了這款神器。」
+            </div>
+        </div>
+    </div>
+
+    <!-- 功能介紹區：兩張卡片，統一使用紅圈內的風格 -->
+    <section>
+        <div class="container">
+            <div class="card-grid">
+                <!-- 卡片1 怎麼辦！我的行李 (紅圈風格) -->
+                <div class="feature-card">
+                    <div class="card-icon">🧳❓</div>
+                    <h3>怎麼辦！<br>我的行李</h3>
+                    <p>panic模式啟動？即時生成個人化行李表，再也不怕忘東西！</p>
+                    
+                    <!-- 行李流程區塊 (紅圈風格) -->
+                    <div class="process-block">
+                        <div class="process-title">行李清單流程</div>
+                        
+                        <!-- 標籤雲: 目的地、出發日期、過夜數、性別、泳衣需求、剩餘空間 -->
+                        <div class="tags-cloud">
+                            <span class="tag-item">目的地</span>
+                            <span class="tag-item">出發日期</span>
+                            <span class="tag-item">過夜數</span>
+                            <span class="tag-item">性別</span>
+                            <span class="tag-item">泳衣需求</span>
+                            <span class="tag-item">剩餘空間</span>
+                        </div>
+                        
+                        <!-- 步驟列表 -->
+                        <div class="steps-list">
+                            <span><span class="step-number">1</span> 填寫以上資訊</span>
+                            <span class="step-arrow">→</span>
+                            <span><span class="step-number">2</span> 系統智慧組合</span>
+                            <span class="step-arrow">→</span>
+                            <span><span class="step-number">3</span> 產出個人化清單</span>
+                        </div>
+                    </div>
+
+                    <button class="card-btn" onclick="window.location.href='行李箱搭配.html'; return false;" title="前往行李工具">✨ 進 入 行 李 工 具</button>
+                </div>
+
+                <!-- 卡片2 旅行小tips — 改成與紅圈相同的風格 -->
+                <div class="feature-card">
+                    <div class="card-icon">🗺️📍</div>
+                    <h3>旅行小tips</h3>
+                    
+                    <!-- 旅行tips流程區塊 — 完全比照紅圈風格 -->
+                    <div class="process-block">
+                        <div class="process-title">固定小提醒</div>
+                        
+                        <!-- 標籤雲: 使用一個標籤代表「旅行小tips」的主題 -->
+                        <div class="tags-cloud">
+                            <span class="tag-item">旅行小提醒</span>
+                            <span class="tag-item">貼心提示</span>
+                        </div>
+                        
+                        <!-- 說明文字區域 — 符合紅圈風格的背景與間距 -->
+                        <div class="tips-description">
+                            🍴 旅行出發前看一看小tips，包保你旅行舒服又愉快 ✨
+                        </div>
+                        
+                        <!-- 步驟列表 — 簡潔說明固定頁面 -->
+                        <div class="steps-list">
+                            <span><span class="step-number">📌</span> 固定精選內容</span>
+                            <span class="step-arrow">→</span>
+                            <span><span class="step-number">👀</span> 一鍵瀏覽</span>
+                        </div>
+                    </div>
+
+                    <button class="card-btn" onclick="window.location.href='旅行小tips.html'; return false;" title="前往固定tips頁面">✨ 瀏 覽 固 定 tips</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 團隊介紹 — 如來佛組 + 完美的劉海、晚睡的貓頭鷹 -->
+    <section style="padding: 50px 0;">
+        <div class="container">
+            <div class="team-section">
+                <div class="team-buddha">如來佛組</div>
+                
+                <div class="team-members">
+                    <div>完美的劉海</div>
+                    <div>晚睡的貓頭鷹</div>
+                </div>
+                <p style="margin-top: 40px; font-size: 1.2rem; color: #2d6a95;">—— 陪你爽爽旅行，忘帶東西不再發生 ——</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="footer">
+        <div class="container">
+            <p style="font-size: 1.1rem;"><span style="font-weight:600;">去旅行！爽！</span> 讓每次出發都輕鬆寫意</p>
+            <p style="margin-top: 16px; opacity: 0.7;">© 2025 去旅行爽 · 白色與淺藍 · RWD 手機也順眼</p>
+        </div>
+    </footer>
+</body>
+</html>
